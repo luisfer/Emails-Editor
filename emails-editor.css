@@ -1,0 +1,66 @@
+@import url('https://fonts.googleapis.com/icon?family=Material+Icons');
+@import url('https://fonts.googleapis.com/css?family=Open+Sans&display=swap');
+
+.container {
+  width: 100%;
+  margin: 30px auto;
+  font-family: 'Open Sans', sans-serif;
+  background: rgb(245,245,244);
+}
+
+.emails-container-title {
+  margin-left: 10%;
+  margin-right: 10%;
+}
+
+.emails-container {
+  border: 2px solid #ccc;
+  border-radius: 3px;
+  background: #fff;
+  display: flex;
+  flex-wrap: wrap;
+  align-content: flex-start;
+  padding: 6px;
+  overflow-x: scroll;
+  min-height: 200px;
+  margin-top: 50px;
+  margin-left: 10%;
+  margin-right: 10%;
+}
+.emails-container .email {
+  height: 30px;
+  margin: 2px;
+  padding: 1px 3px;
+  border-radius: 15px;
+  background: rgb(218,230,255);
+  display: flex;
+  align-items: center;
+  color: rgb(31,26,66);
+  cursor: default;
+  font-family: 'Open Sans', sans-serif;
+}
+
+.emails-container .email span {
+    padding-left: 3px;
+    padding-right: 1px;
+}
+
+.emails-container .email--invalid {
+  background: rgb(240,128,128);
+}
+
+.email i {
+  font-size: 16px;
+  color: #666;
+  margin-left: 5px;
+}
+
+.emails-container input {
+  padding: 5px;
+  font-size: 16px;
+  border: 0;
+  outline: none;
+  font-family: 'Open Sans', sans-serif;
+  color: rgb(31,26,66);
+  flex: 1;
+}
