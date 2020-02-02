@@ -17,11 +17,13 @@
 13. Think of options ('API calls') and include them
 14. Review and refine
 15. Document options
+16. Tidy up css
 
 
 BUGS:
 ✅ 1. Deleting an email doesn't work
-2. Both container share the same emails
+✅ 2. Both container share the same emails
+3. Spaces screw up the email comma listeners
 
 
 NICE TO HAVES:
@@ -44,6 +46,7 @@ NICE TO HAVES:
 
 		root.EmailsEditor = factory();
   }
+
 })(this, function () {
 
   'use strict';
@@ -67,7 +70,8 @@ NICE TO HAVES:
 			this.updateContainer();
 		}
 
-		removeEmail = (index) => {
+		removeEmail = (emailLabel) => {
+			const index = this.emails.indexOf(emailLabel);
 			this.emails = [...this.emails.slice(0, index), ...this.emails.slice(index+1)];
 			this.updateContainer();
 		}
@@ -96,7 +100,6 @@ NICE TO HAVES:
   var EmailsEditor = function(args){
 		let uuid = uuidv4();
 		stores.push({id: uuid, store: new EmailsStore(uuid)});
-		console.log(stores);
 
 		args.container.setAttribute('class', 'container');
 
@@ -133,16 +136,18 @@ NICE TO HAVES:
 			}
 		})
 
-		document.addEventListener('click', (e) => {
-			if (e.target.tagName === 'I') {
-		    const emailLabel = e.target.getAttribute('data-item');
-		    const index = currentStore.getEmails().indexOf(emailLabel);
-				currentStore.removeEmail(index);
-		  }
-		})
 
-		let addEmailButton = createAddEmailButton(currentStore);
-		let getEmailCountButton = createGetEmailCountButton(currentStore);
+		let addEmailButton = document.createElement("button");
+		addEmailButton.innerHTML = "Add email";
+		addEmailButton.addEventListener('click', (e) => {
+			currentStore.addEmails([generateRandomEmail()])
+		});
+
+		let getEmailCountButton = document.createElement("button");
+		getEmailCountButton.innerHTML = "Get email count";
+		getEmailCountButton.addEventListener('click', (e) => {
+			alert("Valid emails: " + currentStore.getValidEmails().length);
+		});
 
 		emailsContainer.appendChild(input);
 		args.container.appendChild(emailsContainerTitle);
@@ -155,29 +160,6 @@ NICE TO HAVES:
 		buttonsContainer.appendChild(getEmailCountButton);
 		args.container.appendChild(buttonsContainer);
 		input.focus();
-	}
-
-	var createAddEmailButton = function(currentStore){
-		let addEmailButton = document.createElement("button");
-		addEmailButton.innerHTML = "Add email";
-		addEmailButton.addEventListener('click', (e) => {
-			currentStore.addEmails([generateRandomEmail()])
-		});
-		return addEmailButton;
-	}
-
-	var createGetEmailCountButton = function(currentStore){
-		let getEmailCountButton = document.createElement("button");
-		getEmailCountButton.innerHTML = "Get email count";
-		getEmailCountButton.addEventListener('click', (e) => {
-			alert("Valid emails: " + currentStore.getValidEmails().length);
-		});
-		return getEmailCountButton;
-	}
-
-
-	var helper = function(){
-
 	}
 
 	function createEmail(label, uuid) {
@@ -194,10 +176,17 @@ NICE TO HAVES:
 	  closeIcon.innerHTML = 'close';
 	  closeIcon.setAttribute('class', 'material-icons');
 	  closeIcon.setAttribute('data-item', label);
+		closeIcon.addEventListener('click', (e) => {
+			const emailLabel = e.target.getAttribute('data-item');
+			const currentStore = stores.find(x => x.id === uuid).store;
+			currentStore.removeEmail(emailLabel);
+		});
 	  div.appendChild(span);
 	  div.appendChild(closeIcon);
 	  return div;
 	}
+
+	// Helper functions
 
 	function validateEmail(email) {
 	    var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -215,7 +204,6 @@ NICE TO HAVES:
 	    return v.toString(16);
 	  });
 	}
-
 
 	return EmailsEditor;
 });
