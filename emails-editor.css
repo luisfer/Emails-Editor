@@ -11,6 +11,7 @@
 .emails-container-title {
   margin-left: 10%;
   margin-right: 10%;
+  font-size: 20px;
 }
 
 .emails-container {
@@ -63,4 +64,12 @@
   font-family: 'Open Sans', sans-serif;
   color: rgb(31,26,66);
   flex: 1;
+}
+
+button {
+  background-color: #4262FF;
+  color: white;
+  border-radius: 6px;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 20px;
 }

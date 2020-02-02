@@ -52,11 +52,17 @@ class EmailsStore {
 	    email.parentElement.removeChild(email);
 	  });
 	}
+
+	getValidEmails = () => {
+		return this.emails.filter((email) => validateEmail(email) == true);
+	}
 }
 
 var store = new EmailsStore([]);
 
 var EmailsEditor = function(args){
+
+		args.container.setAttribute('class', 'container');
 
 		let emailsContainer = document.createElement("div");
 		emailsContainer.setAttribute('class', 'emails-container');
@@ -93,7 +99,7 @@ var EmailsEditor = function(args){
 		})
 
 		let addEmailButton = createAddEmailButton(emailsContainer);
-		let getEmailCountButton = createAddEmailButton(emailsContainer);
+		let getEmailCountButton = createGetEmailCountButton(emailsContainer);
 
 		emailsContainer.appendChild(input);
 		args.container.appendChild(emailsContainerTitle);
@@ -116,14 +122,13 @@ var createAddEmailButton = function(emailsContainer){
 	return addEmailButton;
 }
 
-var createAddEmailButton = function(emailsContainer){
-	let addEmailButton = document.createElement("button");
-	addEmailButton.innerHTML = "Add Email";
-	addEmailButton.addEventListener('click', (e) => {
-		store.setEmails([generateRandomEmail()])
-		store.addEmails(emailsContainer);
+var createGetEmailCountButton = function(emailsContainer){
+	let getEmailCountButton = document.createElement("button");
+	getEmailCountButton.innerHTML = "Get Email Count";
+	getEmailCountButton.addEventListener('click', (e) => {
+		alert(store.getValidEmails().length);
 	});
-	return addEmailButton;
+	return getEmailCountButton;
 }
 
 
@@ -149,9 +154,6 @@ function createEmail(label) {
   div.appendChild(closeIcon);
   return div;
 }
-
-
-
 
 function validateEmail(email) {
     var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
