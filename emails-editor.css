@@ -1,32 +1,41 @@
 @import url('https://fonts.googleapis.com/icon?family=Material+Icons');
-@import url('https://fonts.googleapis.com/css?family=Open+Sans&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:400,700&display=swap');
 
 .container {
   width: 100%;
   margin: 30px auto;
   font-family: 'Open Sans', sans-serif;
   background: rgb(245,245,244);
+  border-radius: 10px;
+  margin-bottom: 50px;
+}
+
+.bold {
+  font-weight: 700;
 }
 
 .emails-container-title {
   margin-left: 10%;
   margin-right: 10%;
   font-size: 20px;
+  padding-top: 50px;
 }
 
 .emails-container {
   border: 2px solid #ccc;
-  border-radius: 3px;
+  border-radius: 10px;
   background: #fff;
   display: flex;
   flex-wrap: wrap;
   align-content: flex-start;
   padding: 6px;
   overflow-x: scroll;
+  overflow-y: auto;
   min-height: 200px;
-  margin-top: 50px;
+  margin-top: 40px;
   margin-left: 10%;
   margin-right: 10%;
+  margin-bottom: 35px;
 }
 .emails-container .email {
   height: 30px;
@@ -39,6 +48,7 @@
   color: rgb(31,26,66);
   cursor: default;
   font-family: 'Open Sans', sans-serif;
+  font-size: 16px;
 }
 
 .emails-container .email span {
@@ -69,7 +79,30 @@
 button {
   background-color: #4262FF;
   color: white;
-  border-radius: 6px;
+  border-radius: 8px;
   font-family: 'Open Sans', sans-serif;
-  font-size: 20px;
+  font-size: 18px;
+  padding: 15px;
+  margin-right: 50px;
+}
+
+::-webkit-input-placeholder { /* Edge */
+  color: rgb(198,180,203);
+}
+
+:-ms-input-placeholder { /* Internet Explorer 10-11 */
+  color: rgb(198,180,203);
+}
+
+::placeholder {
+  color: rgb(198,180,203);
+}
+
+.buttons-container {
+  padding-top: 35px;
+  padding-left: 10%;
+  padding-right: 10%;
+  background-color: white;
+  padding-bottom: 35px;
+  border-radius: 0px 0px 10px 10px;
 }
