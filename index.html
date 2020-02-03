@@ -5,13 +5,12 @@
 <head>
 <body style="background-color: rgb(218,230,255);">
 <div id="emails-editor"></div>
-<div id="emails-editor-2"></div>
 <script type="text/javascript">
     const container = document.querySelector('#emails-editor');
-    const container2 = document.querySelector('#emails-editor-2');
     let options = {};
-    EmailsEditor({container: container, ...options})
-    EmailsEditor({container: container2, ...options})
+    EmailsEditor({container: container, options:{
+      predefinedEmails: []
+    }})
 </script>
 </body>
 </html>

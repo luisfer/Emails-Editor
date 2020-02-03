@@ -52,9 +52,10 @@ NICE TO HAVES:
   'use strict';
 
 	class EmailsStore {
-		constructor(id){
-			this.emails = [];
+		constructor(id, emails, subscriber){
+			this.emails = emails || [];
 			this.id = id;
+			this.subscriber = subscriber;
 		}
 
 		setContainer = (container) => {
@@ -81,6 +82,9 @@ NICE TO HAVES:
 		  this.emails.slice().reverse().forEach(email => {
 		    this.container.prepend(createEmail(email, this.id));
 		  });
+			if (this.subscriber){
+				this.onEmailsChanged();
+			}
 		}
 
 		clearEmails = () => {
@@ -93,13 +97,17 @@ NICE TO HAVES:
 		getValidEmails = () => {
 			return this.emails.filter((email) => validateEmail(email) == true);
 		}
+
+		onEmailsChanged = () => {
+			console.log("New emails list change", this.emails)
+		}
 	};
 
 	var stores = [];
 
   var EmailsEditor = function(args){
 		let uuid = uuidv4();
-		stores.push({id: uuid, store: new EmailsStore(uuid)});
+		stores.push({id: uuid, store: new EmailsStore(uuid, [], true)});
 
 		args.container.setAttribute('class', 'container');
 
@@ -140,7 +148,7 @@ NICE TO HAVES:
 		let addEmailButton = document.createElement("button");
 		addEmailButton.innerHTML = "Add email";
 		addEmailButton.addEventListener('click', (e) => {
-			currentStore.addEmails([generateRandomEmail()])
+			currentStore.addEmail(generateRandomEmail())
 		});
 
 		let getEmailCountButton = document.createElement("button");
