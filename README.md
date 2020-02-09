@@ -1,6 +1,6 @@
 # Emails-Editor
 
-2020, Luisfer Romero Calero in Leiden for Miro
+_2020, Luisfer Romero Calero in Leiden for Miro_
 
 This is an Emails-Editor box that creates emails from input.
 
@@ -13,7 +13,7 @@ The main features are:
 - Adds random emails ("@randomemail.com") (button 'Add email')
 - Allows adding more than one box
 
-## Load
+## Load
 
 Once you have downloaded the .css and .js files included in this repository, create an HTML file in the same folder
 To load Emails-Editor, add this to your HTML:
