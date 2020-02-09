@@ -1,33 +1,27 @@
 
-// TODOS:
-/*
+/* Tasks:
+
 ✅ 0. Create git repository
 ✅ 1. Create event listeners with enter, comma.
 ✅ 2. Create blocks. A block can be deleted.
 ✅ 3. Create width to match parent.
-4. Create scrollable textarea.
+✅ 4. Create scrollable textarea.
 ✅ 5. If email is not valid, the block is red.
 ✅ 6. Create button 'add email' that adds a random email (random email generator).
 ✅ 7. Create button 'get emails count' for a user to see an alert with ONLY valid emails count.
 ✅ 8. Create support for creating several emails editors in the DOM.
-✅  10. Bundle .css in .js file
 ✅ 11. Match design of the box
 ✅ 12. Add support for control+v and split commas
 ✅ 12.1. Add support for losing focus
-13. Think of options ('API calls') and include them
+✅ 13. Think of options ('API calls') and include them
 14. Review and refine
 15. Document options
-16. Tidy up css
-
+✅  16. Tidy up css
 
 BUGS:
 ✅ 1. Deleting an email doesn't work
 ✅ 2. Both container share the same emails
-3. Spaces screw up the email comma listeners
-
-
-NICE TO HAVES:
-1. Put in local storage
+✅ 3. Spaces screw up the email comma listeners
 
 */
 
@@ -52,10 +46,10 @@ NICE TO HAVES:
   'use strict';
 
 	class EmailsStore {
-		constructor(id, emails, subscriber){
-			this.emails = emails || [];
+		constructor(id, suscriber){
 			this.id = id;
-			this.subscriber = subscriber;
+			this.suscriber = suscriber;
+      this.emails = [];
 		}
 
 		setContainer = (container) => {
@@ -66,9 +60,13 @@ NICE TO HAVES:
 			return this.emails;
 		}
 
-	  addEmail = (email) => {
-			this.emails.push(email);
-			this.updateContainer();
+    setEmails = (emails) => {
+      emails.forEach((email) => {
+        if (email.trim() !== ""){
+          this.emails.push(email);
+        }
+      })
+      this.updateContainer();
 		}
 
 		removeEmail = (emailLabel) => {
@@ -106,8 +104,21 @@ NICE TO HAVES:
 	var stores = [];
 
   var EmailsEditor = function(args){
-		let uuid = uuidv4();
-		stores.push({id: uuid, store: new EmailsStore(uuid, [], true)});
+
+    let uuid = uuidv4();
+
+    // Array of stores in case this method is called more than once
+    // Having several stores allows the user to generate more than one emails editor DOM element
+
+    // Every time the method is called, there is a new unique store calling
+    // the class EmailsStore
+
+    let suscriber = false;
+    if (args.options && args.options["suscriber"]){
+      suscriber = args.options["suscriber"];
+    }
+
+		stores.push({id: uuid, store: new EmailsStore(uuid,suscriber)});
 
 		args.container.setAttribute('class', 'container');
 
@@ -116,39 +127,51 @@ NICE TO HAVES:
 		emailsBox.setAttribute('class', 'emails-box');
 
 		let currentStore = stores.find(x => x.id === uuid).store;
+
+    // Attaching the DOM element to the store
 		currentStore.setContainer(emailsBox);
+
+    // Creation of emails editor title
 
 		let containerTitle = document.createElement("div");
 		containerTitle.setAttribute('class', 'container-title');
 		containerTitle.innerHTML = "Share <span class=\"bold\">Board Name</span> with others";
-		let input = document.createElement("input");
-		input.placeholder = "Add more people...";
 
+    // Creation of input with its listeners
+
+    let input = document.createElement("input");
+		input.placeholder = "Add more people...";
 		input.addEventListener('keyup', (e) => {
 		    if (e.key === 'Enter') {
 					if (e.target.value.toString().trim() !== ""){
 						e.target.value.split(',').forEach(email => {
-			        currentStore.addEmail(email);
+			        currentStore.setEmails([email]);
 			      });
 			      input.value = '';
 					}
 		    }
 		});
-
 		input.addEventListener('blur', (e) => {
 			if (e.target.value.toString().trim() !== ""){
 				e.target.value.split(',').forEach(email => {
-					currentStore.addEmail(email);
+					currentStore.setEmails([email]);
 				});
 				input.value = '';
 			}
 		})
 
+    // Adding DOM elements to the container
 
-		let addEmailButton = document.createElement("button");
+		emailsBox.appendChild(input);
+		args.container.appendChild(containerTitle);
+		args.container.appendChild(emailsBox);
+
+    // Buttons and buttons container
+
+    let addEmailButton = document.createElement("button");
 		addEmailButton.innerHTML = "Add email";
 		addEmailButton.addEventListener('click', (e) => {
-			currentStore.addEmail(generateRandomEmail())
+			currentStore.setEmails([generateRandomEmail()])
 		});
 
 		let getEmailCountButton = document.createElement("button");
@@ -157,18 +180,18 @@ NICE TO HAVES:
 			alert("Valid emails: " + currentStore.getValidEmails().length);
 		});
 
-		emailsBox.appendChild(input);
-		args.container.appendChild(containerTitle);
-		args.container.appendChild(emailsBox);
-
 		let buttonsContainer = document.createElement("div");
 		buttonsContainer.setAttribute('class', 'buttons-container');
-
 		buttonsContainer.appendChild(addEmailButton);
 		buttonsContainer.appendChild(getEmailCountButton);
 		args.container.appendChild(buttonsContainer);
+
 		input.focus();
+
+    return currentStore;
 	}
+
+  // Function to create an email entry to be added to the input elements
 
 	function createEmail(label, uuid) {
 	  const div = document.createElement('div');
@@ -194,7 +217,7 @@ NICE TO HAVES:
 	  return div;
 	}
 
-	// Helper functions
+	// Helper functions: email validation, generation of random emails and generation of unique uuids for the stores
 
 	function validateEmail(email) {
 	    var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;

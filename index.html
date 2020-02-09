@@ -1,16 +1,16 @@
 <html>
 <head>
 <link rel="stylesheet" href="emails-editor.css" />
-<script type="text/javascript" src="./emails-editor.js"></script>
+<script type="text/javascript" src="emails-editor.js"></script>
 <head>
 <body style="background-color: rgb(218,230,255);margin:50px 50px 50px 50px;">
 <div id="emails-editor"></div>
+<div id="emails-editor-2"></div>
 <script type="text/javascript">
     const container = document.querySelector('#emails-editor');
-    let options = {};
-    EmailsEditor({container: container, options:{
-      predefinedEmails: []
-    }})
+    const container2 = document.querySelector('#emails-editor-2');
+    const e1 = EmailsEditor({container: container});
+    const e2 = EmailsEditor({container: container2});
 </script>
 </body>
 </html>
