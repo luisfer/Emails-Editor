@@ -111,16 +111,16 @@ NICE TO HAVES:
 
 		args.container.setAttribute('class', 'container');
 
-		let emailsContainer = document.createElement("div");
-		emailsContainer.setAttribute('id', 'container__' + uuid);
-		emailsContainer.setAttribute('class', 'emails-container');
+		let emailsBox = document.createElement("div");
+		emailsBox.setAttribute('id', 'container__' + uuid);
+		emailsBox.setAttribute('class', 'emails-box');
 
 		let currentStore = stores.find(x => x.id === uuid).store;
-		currentStore.setContainer(emailsContainer);
+		currentStore.setContainer(emailsBox);
 
-		let emailsContainerTitle = document.createElement("div");
-		emailsContainerTitle.setAttribute('class', 'emails-container-title');
-		emailsContainerTitle.innerHTML = "Share <span class=\"bold\">Board Name</span> with others";
+		let containerTitle = document.createElement("div");
+		containerTitle.setAttribute('class', 'container-title');
+		containerTitle.innerHTML = "Share <span class=\"bold\">Board Name</span> with others";
 		let input = document.createElement("input");
 		input.placeholder = "Add more people...";
 
@@ -157,9 +157,9 @@ NICE TO HAVES:
 			alert("Valid emails: " + currentStore.getValidEmails().length);
 		});
 
-		emailsContainer.appendChild(input);
-		args.container.appendChild(emailsContainerTitle);
-		args.container.appendChild(emailsContainer);
+		emailsBox.appendChild(input);
+		args.container.appendChild(containerTitle);
+		args.container.appendChild(emailsBox);
 
 		let buttonsContainer = document.createElement("div");
 		buttonsContainer.setAttribute('class', 'buttons-container');
